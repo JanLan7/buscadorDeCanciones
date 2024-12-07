@@ -15,11 +15,9 @@
     <div class="container">
         <h1 class="my-4">Buscador de letras</h1>
         <div class="mb-3">
-            <input type="text" id="artist" class="form-control" placeholder="Artista">
+            <input type="text" id="searchInput" class="form-control" placeholder="Artista o Canción">
         </div>
-        <div class="mb-3">
-            <input type="text" id="song" class="form-control" placeholder="Canción">
-        </div>
+        <div id="autocompleteSuggestions" class="list-group"></div>
         <button id="searchButton" class="btn btn-primary mb-4">Buscar</button>
         <div id="lyrics" class="p-3 border rounded bg-light lyrics-container"></div>
         <div id="suggestions" class="mt-4"></div>
