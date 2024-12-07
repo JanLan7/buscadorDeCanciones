@@ -21,21 +21,19 @@ document.getElementById('searchButton').addEventListener('click', function() {
                             const fuse = new Fuse(suggestions.data, options);
                             const result = fuse.search(song);
 
+                            // Mostrar sugerencias solo si no se encuentra una coincidencia exacta
                             if (result.length > 0) {
                                 const bestMatch = result[0].item;
-                                fetch(`https://api.lyrics.ovh/v1/${bestMatch.artist.name}/${bestMatch.title}`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        document.getElementById('lyrics').innerText = data.lyrics;
+                                if (bestMatch.artist.name.toLowerCase() !== artist.toLowerCase() || bestMatch.title.toLowerCase() !== song.toLowerCase()) {
+                                    let suggestionsHTML = '<h5>Sugerencias:</h5><ul class="list-group">';
+                                    result.forEach(item => {
+                                        suggestionsHTML += `<li class="list-group-item">${item.item.artist.name} - ${item.item.title}</li>`;
                                     });
-                                
-                                // Mostrar sugerencias
-                                let suggestionsHTML = '<h5>Sugerencias:</h5><ul class="list-group">';
-                                result.forEach(item => {
-                                    suggestionsHTML += `<li class="list-group-item">${item.item.artist.name} - ${item.item.title}</li>`;
-                                });
-                                suggestionsHTML += '</ul>';
-                                document.getElementById('suggestions').innerHTML = suggestionsHTML;
+                                    suggestionsHTML += '</ul>';
+                                    document.getElementById('suggestions').innerHTML = suggestionsHTML;
+                                } else {
+                                    document.getElementById('suggestions').innerHTML = ''; // Limpiar sugerencias
+                                }
                             } else {
                                 document.getElementById('lyrics').innerText = 'Letra no encontrada.';
                                 document.getElementById('suggestions').innerHTML = ''; // Limpiar sugerencias
